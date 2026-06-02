@@ -746,19 +746,22 @@ function colorClass(value, refMin, refMax, orthoMin, orthoMax) {
     (orthoMin === null || value >= orthoMin) &&
     (orthoMax === null || value <= orthoMax);
 
-  const outsideRef = hasRef &&
-    ((refMin !== null && value < refMin) || (refMax !== null && value > refMax));
+  const withinRef = hasRef &&
+    (refMin === null || value >= refMin) &&
+    (refMax === null || value <= refMax);
 
-  // Ortho takes priority: if within ortho → green
+  const outsideRef = hasRef && !withinRef;
+
   if (hasOrtho) {
-    if (withinOrtho) return 'green';
-    // Outside ortho: red if also outside lab, orange otherwise
-    return outsideRef ? 'red' : 'orange';
+    if (withinOrtho) return 'green';          // binnen ortho → groen
+    if (withinRef)   return 'orange';          // binnen lab maar buiten ortho → geel
+    return outsideRef ? 'red' : 'orange';      // buiten beide → rood
   }
 
-  // No ortho: red only when outside lab range
-  if (outsideRef) return 'red';
-  return 'none';
+  // Ortho uitgeschakeld of niet ingevuld
+  if (!hasRef) return 'none';
+  if (withinRef) return 'green';              // binnen lab → groen
+  return 'red';                               // buiten lab → rood
 }
 
 // ── REVIEW MODAL ─────────────────────────────────────────────────────────────
@@ -915,6 +918,7 @@ function renderTable() {
   const headerRow = document.createElement('tr');
 
   const elTh = document.createElement('th');
+  elTh.className = 'el-sticky';
   elTh.style.minWidth = '220px';
   elTh.textContent = 'Element';
   headerRow.appendChild(elTh);
@@ -979,11 +983,11 @@ function renderTable() {
     const catRow = document.createElement('tr');
     catRow.className = 'category-row';
     catRow.dataset.cat = cat;
-    catRow.innerHTML = `<td colspan="${tests.length + 2}">
+    catRow.innerHTML = `<td class="el-sticky cat-label-cell">
       <span class="cat-toggle">${isCollapsed ? '▶' : '▼'}</span>
       <span class="cat-label">${esc(cat)}</span>
       <button class="btn-rename-cat" title="Hernoem categorie" data-cat="${esc(cat)}">✎</button>
-    </td>`;
+    </td><td colspan="${tests.length + 1}" class="cat-fill-cell"></td>`;
 
     catRow.querySelector('.cat-toggle, .cat-label').addEventListener('click', () => {
       if (collapsedCategories.has(cat)) collapsedCategories.delete(cat);
@@ -1046,23 +1050,24 @@ function renderTable() {
       if (selectedElement === el) row.classList.add('selected');
       row.dataset.element = el;
 
-      let rowHTML = `<td><div class="element-name">
+      let rowHTML = `<td class="el-sticky"><div class="element-name">
         <button class="btn-delete-el" title="Verwijderen" data-el="${esc(el)}">✕</button>
         <span class="el-label">${esc(el)}</span>
         <button class="btn-rename" title="Hernoemen" data-el="${esc(el)}">✎</button>
       </div></td>`;
 
       let rowUnit = '';
-      for (const test of tests) {
+      for (let ti = 0; ti < tests.length; ti++) {
+        const test = tests[ti];
         const result = test.results.find(r => r.element === el);
         if (!result || result.value === null) {
-          rowHTML += '<td class="value-cell"><span class="no-value">—</span></td>';
+          rowHTML += `<td class="value-cell" data-test-idx="${ti}" data-el="${esc(el)}"><span class="no-value">—</span></td>`;
         } else {
           const useOrtho = state.settings.useOrtho;
           const cc = colorClass(result.value, elMeta.labMin ?? null, elMeta.labMax ?? null, useOrtho ? (elMeta.orthoMin ?? null) : null, useOrtho ? (elMeta.orthoMax ?? null) : null);
           const refLabel = result.refText ? `<span class="val-ref">${esc(result.refText)}</span>` : '';
           if (!rowUnit && result.unit) rowUnit = result.unit;
-          rowHTML += `<td class="value-cell"><span class="val-inner val-${cc}">${result.value}</span>${refLabel}</td>`;
+          rowHTML += `<td class="value-cell" data-test-idx="${ti}" data-el="${esc(el)}"><span class="val-inner val-${cc}">${result.value}</span>${refLabel}</td>`;
         }
       }
       rowHTML += `<td class="unit-cell">${esc(rowUnit)}</td>`;
@@ -1075,8 +1080,48 @@ function renderTable() {
       });
       row.addEventListener('dragend', () => row.classList.remove('dragging'));
 
+      // Inline value editing
+      row.querySelectorAll('td.value-cell').forEach(td => {
+        td.addEventListener('click', e => {
+          e.stopPropagation();
+          if (td.querySelector('input')) return; // already editing
+          const testIdx = parseInt(td.dataset.testIdx);
+          const elName = td.dataset.el;
+          const test = tests[testIdx];
+          let result = test.results.find(r => r.element === elName);
+          const currentVal = result?.value ?? '';
+          const inner = td.querySelector('.val-inner, .no-value');
+          const origHTML = td.innerHTML;
+          td.innerHTML = '';
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'val-edit-input';
+          input.value = currentVal;
+          td.appendChild(input);
+          input.focus(); input.select();
+          const save = () => {
+            const raw = input.value.trim().replace(',', '.');
+            const num = raw === '' ? null : parseFloat(raw);
+            if (raw !== '' && isNaN(num)) { td.innerHTML = origHTML; return; }
+            if (!result) {
+              result = { element: elName, value: null, unit: '', refMin: null, refMax: null, refText: '' };
+              test.results.push(result);
+            }
+            result.value = num;
+            saveState();
+            renderTable();
+            if (selectedElement) openDetailPanel(selectedElement);
+          };
+          input.addEventListener('blur', save);
+          input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+            if (e.key === 'Escape') { td.innerHTML = origHTML; }
+          });
+        });
+      });
+
       row.addEventListener('click', e => {
-        if (e.target.closest('.btn-rename') || e.target.closest('.btn-delete-el')) return;
+        if (e.target.closest('.btn-rename') || e.target.closest('.btn-delete-el') || e.target.closest('.value-cell')) return;
         openDetailPanel(el);
       });
 
@@ -1133,6 +1178,12 @@ function openDetailPanel(elementName) {
   document.getElementById('detail-name').textContent = elementName;
   document.getElementById('main').classList.add('panel-open');
   document.getElementById('detail-panel').classList.remove('hidden');
+
+  // Scroll table to the right after panel transition completes (transition: .25s)
+  setTimeout(() => {
+    const wrap = document.querySelector('.results-table-wrap');
+    if (wrap) wrap.scrollLeft = wrap.scrollWidth;
+  }, 260);
 
   renderDetailBody(elementName);
 }
