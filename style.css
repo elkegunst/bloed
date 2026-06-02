@@ -753,6 +753,12 @@ td.value-cell .val-ref {
   cursor: pointer;
 }
 
+.settings-last-updated {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
 .settings-actions {
   display: flex;
   flex-direction: column;

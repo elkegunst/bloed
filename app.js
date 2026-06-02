@@ -1492,6 +1492,7 @@ function renderSettingsBody() {
       <button id="settings-export" class="btn-ghost settings-btn">↓ Exporteer backup</button>
       <button id="settings-import" class="btn-ghost settings-btn">↑ Backup herstellen</button>
     </div>
+    <p class="settings-last-updated">Laatste update: 2 juni 2026 - 21:05</p>
   `;
   body.appendChild(dataSection);
 
