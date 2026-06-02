@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bloedwaarden</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Bloedwaarden</h1>
+    <div class="header-actions">
+      <button id="btn-import-pdf" class="btn-primary">+ PDF importeren</button>
+      <button id="btn-settings" class="btn-ghost btn-icon-only" title="Instellingen">⚙</button>
+    </div>
+    <input type="file" id="input-pdf" accept=".pdf" style="display:none">
+    <input type="file" id="input-json" accept=".json" style="display:none">
+  </header>
+
+  <div id="drop-overlay" class="drop-overlay hidden">
+    <div class="drop-message">
+      <span class="drop-icon">📄</span>
+      <p>Laat los om PDF te importeren</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <div id="empty-state" class="empty-state hidden">
+      <div class="empty-icon">🩸</div>
+      <h2>Nog geen bloedwaarden</h2>
+      <p>Sleep een PDF in het venster of klik hieronder</p>
+      <button class="btn-primary" id="empty-import-btn">PDF importeren</button>
+    </div>
+    <div id="table-container"></div>
+  </main>
+
+  <aside id="detail-panel" class="detail-panel hidden">
+    <div class="detail-header">
+      <h2 id="detail-name"></h2>
+      <button id="detail-close" class="btn-icon">✕</button>
+    </div>
+    <div id="detail-body"></div>
+  </aside>
+
+  <aside id="settings-panel" class="detail-panel hidden">
+    <div class="detail-header">
+      <h2>Instellingen</h2>
+      <button id="settings-close" class="btn-icon">✕</button>
+    </div>
+    <div id="settings-body"></div>
+  </aside>
+
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">PDF controleren</h2>
+        <button id="modal-close" class="btn-icon">✕</button>
+      </div>
+      <div class="modal-meta">
+        <label>
+          <span>Afnamedatum</span>
+          <input type="date" id="review-date">
+        </label>
+        <label>
+          <span>Lab</span>
+          <input type="text" id="review-lab" placeholder="Labnaam">
+        </label>
+      </div>
+      <p class="modal-hint">Controleer de uitgelezen waarden. Klik op een veld om te bewerken. Rijen met vraagteken zijn onzeker uitgelezen.</p>
+      <div id="modal-table-wrap"></div>
+      <div class="modal-footer">
+        <span id="modal-parsed-count" class="parse-info"></span>
+        <div class="modal-actions">
+          <button id="review-cancel" class="btn-ghost">Annuleren</button>
+          <button id="review-add-row" class="btn-ghost">+ Rij toevoegen</button>
+          <button id="review-save" class="btn-primary">Opslaan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
