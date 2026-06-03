@@ -357,6 +357,7 @@ const NAME_MAP = {
   // Mineralen
   'magnesium': 'Magnesium',
   'zink': 'Zink',
+  'zink (serum)': 'Zink',
   'selenium': 'Selenium',
   // Eiwitten
   'albumine': 'Albumine',
@@ -515,7 +516,7 @@ function parseAML(lines) {
     // Range: "X,Y - A,B" or "< X,Y" or ">= X,Y"
     // Value: single number possibly with comma decimal, followed by optional space
     const m = raw.match(
-      /^(.+?)\s+([\d]+(?:,\d+)?)\s+(?:\[.\]\s*)*((?:[\d,]+(?:\s*[-–]\s*[\d,]+)?|[<>≤≥]=?\s*[\d,]+))\s+(\S+)\s+[A-Z]{2,3}$/
+      /^(.+?)\s+([\d]+(?:,\d+)?)\s+(?:\[.\]\s*)*((?:[\d,]+(?:\s*[-–]\s*[\d,]+)?|[<>≤≥]=?\s*[\d,]+))\s+(\S+)\s+[A-Z]{2,6}$/
     );
 
     if (m) {
