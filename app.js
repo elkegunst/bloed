@@ -125,11 +125,251 @@ const PRESET_ELEMENTS = {
   'CA 15-3':                  { category: 'Tumormarkers',                                          description: 'Tumormarker (Cancer Antigen 15-3) gebruikt bij de opvolging van borstkankerbehandeling. Verhoogd bij actieve ziekte of terugval. Niet geschikt als screeningstest — enkel zinvol in de context van een bestaande diagnose.' },
 };
 
+// ── TRANSLATIONS ────────────────────────────────────────────────────────────
+
+const ELEMENT_NAMES_EN = {
+  // Red blood cells
+  'Hemoglobine': 'Hemoglobin',
+  'Erythrocyten': 'RBC (Red Blood Cells)',
+  'Hematocriet': 'Hematocrit',
+  'Gemiddeld celvolume (MCV)': 'MCV',
+  'Gemiddeld cellulair hemoglobine (MCH)': 'MCH',
+  'Gemiddelde hemoglobineconcentratie (MCHC)': 'MCHC',
+  'Rode bloedcellen distributie (RDW)': 'RDW',
+  'Reticulocyten': 'Reticulocyte Count',
+  'Reticulocytose': 'Absolute Reticulocyte Count',
+  'Normoblasten': 'Nucleated RBC (nRBC)',
+  // White blood cells
+  'Leukocyten': 'WBC (White Blood Cells)',
+  'Neutrofielen': 'Neutrophils %',
+  'Neutrofielen totaal': 'Absolute Neutrophil Count (ANC)',
+  'Lymfocyten': 'Lymphocytes %',
+  'Lymfocyten totaal': 'Absolute Lymphocyte Count',
+  'Monocyten': 'Monocytes %',
+  'Monocyten totaal': 'Absolute Monocyte Count',
+  'Eosinofielen': 'Eosinophils %',
+  'Eosinofielen totaal': 'Absolute Eosinophil Count',
+  'Basofielen': 'Basophils %',
+  'Basofielen totaal': 'Absolute Basophil Count',
+  'Immature granulocyten': 'Immature Granulocytes',
+  // Platelets & coagulation
+  'Trombocyten': 'Platelet Count',
+  'Sedimentatie': 'Sed Rate (ESR)',
+  'Protrombinetijd (%)': 'Prothrombin Time (%)',
+  'Protrombinetijd INR': 'INR',
+  'Protrombinetijd (sec)': 'Prothrombin Time (sec)',
+  'Geactiveerde partiële tromboplastinetijd (aPTT)': 'aPTT',
+  'aPTT ratio': 'aPTT Ratio',
+  // Iron & anemia
+  'IJzer': 'Iron, Serum',
+  'Ferritine': 'Ferritin',
+  'Transferrine': 'Transferrin',
+  '% Saturatie': 'Transferrin Saturation (TSAT)',
+  // Vitamins
+  'Vitamine B6 (Pyridoxine)': 'Vitamin B6 (Pyridoxine)',
+  'Vitamine B11 (Foliumzuur)': 'Folate',
+  'Vitamine B12 (Cobalamine)': 'Vitamin B12',
+  'Vitamine D': 'Vitamin D, 25-Hydroxy',
+  // Liver
+  'Alanineaminotransferase (ALT)': 'ALT (SGPT)',
+  'Aspartaataminotransferase (AST)': 'AST (SGOT)',
+  'Gamma-glutamyltransferase (Gamma-GT)': 'GGT',
+  'Alkalische fosfatase': 'Alkaline Phosphatase (ALP)',
+  'Bilirubine Totaal': 'Total Bilirubin',
+  'Lactaatdehydrogenase (LDH)': 'LDH',
+  // Kidney
+  'Creatinine': 'Creatinine',
+  'Urinezuur': 'Uric Acid',
+  // Glucose & metabolism
+  'Glucose': 'Glucose',
+  'Geglyceerd hemoglobine % (HbA1c)': 'Hemoglobin A1c',
+  'Geglyceerd hemoglobine IFCC (HbA1c)': 'Hemoglobin A1c (IFCC)',
+  'Insuline': 'Insulin',
+  'HOMA 2 IR index': 'HOMA-IR',
+  'HOMA2 %B (bèta-cel activiteit)': 'HOMA2 %B (Beta-Cell Function)',
+  'HOMA2 %S (insulinegevoeligheid)': 'HOMA2 %S (Insulin Sensitivity)',
+  // Lipid panel
+  'Cholesterol totaal': 'Total Cholesterol',
+  'HDL cholesterol': 'HDL Cholesterol',
+  'LDL cholesterol': 'LDL Cholesterol',
+  // Thyroid
+  'Schildklierstimulerend hormoon (TSH)': 'TSH',
+  'Vrij T3': 'Free T3',
+  'Vrij T4': 'Free T4',
+  // Hormones
+  'Estradiol': 'Estradiol',
+  'Progesteron': 'Progesterone',
+  'Follikelstimulerend hormoon (FSH)': 'FSH',
+  'Luteïniserend hormoon (LH)': 'LH',
+  'FSH:LH ratio': 'FSH:LH Ratio',
+  'Testosteron': 'Testosterone',
+  'DHEA-sulfaat (DHEA-S)': 'DHEA-S',
+  'Cortisol': 'Cortisol',
+  // Inflammatory markers
+  'C-reactief proteïne (CRP)': 'CRP (C-Reactive Protein)',
+  'Homocysteïne': 'Homocysteine',
+  // Tumor markers
+  'CA 15-3': 'CA 15-3',
+  // Electrolytes
+  'Natrium': 'Sodium',
+  'Kalium': 'Potassium',
+  'Chloride': 'Chloride',
+  'Bicarbonaat': 'CO2 (Bicarbonate)',
+  'Calcium': 'Calcium',
+  'Fosfor': 'Phosphorus',
+  // Minerals
+  'Magnesium': 'Magnesium',
+  'Zink': 'Zinc',
+  'Selenium': 'Selenium',
+  // Proteins
+  'Albumine': 'Albumin',
+  'Totaal eiwit': 'Total Protein',
+};
+
+const CATEGORY_NAMES_EN = {
+  'Hematologie': 'CBC (Complete Blood Count)',
+  'IJzer & Anemie': 'Iron & Anemia',
+  'Vitaminen & Mineralen': 'Vitamins & Minerals',
+  'Lever': 'Liver Panel',
+  'Nieren': 'Kidney Function',
+  'Glucose & Metabolisme': 'Glucose & Metabolism',
+  'Cholesterol en Hart': 'Lipid Panel',
+  'Schildklier': 'Thyroid Panel',
+  'Hormonen': 'Hormones',
+  'Ontsteking': 'Inflammatory Markers',
+  'Elektrolieten': 'Electrolytes',
+  'Eiwitten': 'Proteins',
+  'Tumormarkers': 'Tumor Markers',
+  'Overige': 'Other',
+};
+
+const UI_STRINGS = {
+  nl: {
+    title: 'Bloedwaarden',
+    importPdf: '+ PDF importeren',
+    settings: 'Instellingen',
+    noDataTitle: 'Nog geen bloedwaarden',
+    noDataDesc: 'Sleep een PDF in het venster of klik hieronder',
+    noDataBtn: 'PDF importeren',
+    element: 'Element',
+    unit: 'Eenheid',
+    dropMessage: 'Laat los om PDF te importeren',
+    reviewTitle: 'PDF controleren',
+    reviewDate: 'Afnamedatum',
+    reviewLab: 'Lab',
+    reviewHint: 'Controleer de uitgelezen waarden. Klik op een veld om te bewerken. Rijen met vraagteken zijn onzeker uitgelezen.',
+    reviewCancel: 'Annuleren',
+    reviewAddRow: '+ Rij toevoegen',
+    reviewSave: 'Opslaan',
+    reviewParsed: (n, u) => `${n} rijen uitgelezen${u ? ` · ${u} onzeker (geel)` : ''}`,
+    displaySection: 'Weergave',
+    hideEmpty: 'Verberg elementen zonder waarden',
+    useOrtho: 'Gebruik orthomoleculaire referentiewaarden',
+    dataSection: 'Data',
+    exportBtn: '↓ Exporteer backup',
+    importBtn: '↑ Backup herstellen',
+    lastUpdate: 'Laatste update',
+    languageSection: 'Taal',
+    explanation: 'Uitleg',
+    trend: 'Verloop',
+    values: 'Waarden',
+    category: 'Categorie',
+    labRef: 'Lab referentiewaarden',
+    orthoRef: 'Orthomoleculaire referentiewaarden',
+    autoSaved: 'Automatisch opgeslagen',
+    min: 'min',
+    max: 'max',
+    confirmDeleteEl: (el) => `"${el}" en alle bijbehorende waarden verwijderen?`,
+    confirmDeleteCol: (d, l) => `Kolom "${d} — ${l}" en alle waarden verwijderen?`,
+    toastImported: (n) => `${n} waarden opgeslagen`,
+    toastDeleted: 'Verwijderd',
+    toastExported: 'Backup geëxporteerd',
+    toastImportedBackup: 'Backup hersteld',
+    rename: 'Hernoemen',
+    delete: 'Verwijderen',
+    reviewElement: 'Element',
+    reviewValue: 'Waarde',
+    reviewUnit: 'Eenheid',
+    reviewRefMin: 'Ref min',
+    reviewRefMax: 'Ref max',
+  },
+  en: {
+    title: 'Blood values',
+    importPdf: '+ Import PDF',
+    settings: 'Settings',
+    noDataTitle: 'No blood values yet',
+    noDataDesc: 'Drag a PDF into the window or click below',
+    noDataBtn: 'Import PDF',
+    element: 'Element',
+    unit: 'Unit',
+    dropMessage: 'Drop to import PDF',
+    reviewTitle: 'Review PDF',
+    reviewDate: 'Collection date',
+    reviewLab: 'Lab',
+    reviewHint: 'Review the extracted values. Click a field to edit. Rows with question marks were read with uncertainty.',
+    reviewCancel: 'Cancel',
+    reviewAddRow: '+ Add row',
+    reviewSave: 'Save',
+    reviewParsed: (n, u) => `${n} rows extracted${u ? ` · ${u} uncertain (yellow)` : ''}`,
+    displaySection: 'Display',
+    hideEmpty: 'Hide elements without values',
+    useOrtho: 'Use orthomolecular reference values',
+    dataSection: 'Data',
+    exportBtn: '↓ Export backup',
+    importBtn: '↑ Restore backup',
+    lastUpdate: 'Last update',
+    languageSection: 'Language',
+    explanation: 'Explanation',
+    trend: 'Trend',
+    values: 'Values',
+    category: 'Category',
+    labRef: 'Lab reference values',
+    orthoRef: 'Orthomolecular reference values',
+    autoSaved: 'Auto-saved',
+    min: 'min',
+    max: 'max',
+    confirmDeleteEl: (el) => `Delete "${el}" and all associated values?`,
+    confirmDeleteCol: (d, l) => `Delete column "${d} — ${l}" and all values?`,
+    toastImported: (n) => `${n} values saved`,
+    toastDeleted: 'Deleted',
+    toastExported: 'Backup exported',
+    toastImportedBackup: 'Backup restored',
+    rename: 'Rename',
+    delete: 'Delete',
+    reviewElement: 'Element',
+    reviewValue: 'Value',
+    reviewUnit: 'Unit',
+    reviewRefMin: 'Ref min',
+    reviewRefMax: 'Ref max',
+  },
+};
+
+function t(key) {
+  const lang = state.settings.lang || 'nl';
+  return UI_STRINGS[lang]?.[key] ?? UI_STRINGS.nl[key] ?? key;
+}
+
+const _enNameLookup = Object.fromEntries(Object.entries(ELEMENT_NAMES_EN).map(([k, v]) => [k.toLowerCase(), v]));
+const _enCatLookup = Object.fromEntries(Object.entries(CATEGORY_NAMES_EN).map(([k, v]) => [k.toLowerCase(), v]));
+
+function displayName(name) {
+  if ((state.settings.lang || 'nl') === 'en') {
+    const en = _enNameLookup[name.toLowerCase()];
+    return en ? `${en} (${name})` : name;
+  }
+  return name;
+}
+
+function displayCategory(cat) {
+  if ((state.settings.lang || 'nl') === 'en') return _enCatLookup[cat.toLowerCase()] || cat;
+  return cat;
+}
+
 let state = {
   tests: [],
   elements: {},
   categories: [...DEFAULT_CATEGORIES],
-  settings: { useOrtho: true, hideEmpty: false },
+  settings: { useOrtho: true, hideEmpty: false, lang: 'nl' },
 };
 
 function loadState() {
@@ -142,6 +382,7 @@ function loadState() {
       if (!state.settings) state.settings = { useOrtho: true, hideEmpty: false };
       if (state.settings.useOrtho === undefined) state.settings.useOrtho = true;
       if (state.settings.hideEmpty === undefined) state.settings.hideEmpty = false;
+      if (!state.settings.lang) state.settings.lang = 'nl';
       // No tests = discard saved elements (presets repopulate them cleanly)
       if (!state.tests || state.tests.length === 0) state.elements = {};
 
@@ -384,7 +625,7 @@ function canonicalName(name) {
 
 // Verwijder een element uit alle tests + state.elements
 function deleteElement(name) {
-  if (!confirm(`"${name}" verwijderen uit alle testen?`)) return;
+  if (!confirm(t('confirmDeleteEl')(displayName(name)))) return;
   for (const test of state.tests) {
     test.results = test.results.filter(r => r.element !== name);
   }
@@ -772,14 +1013,19 @@ let pendingParsed = null; // holds parsed data during review
 function openReviewModal(parsed) {
   pendingParsed = parsed;
 
-  document.getElementById('modal-title').textContent = `PDF controleren — ${parsed.filename}`;
+  document.getElementById('modal-title').textContent = `${t('reviewTitle')} — ${parsed.filename}`;
   document.getElementById('review-date').value = parsed.date;
   document.getElementById('review-lab').value = parsed.lab;
+  document.querySelector('.modal-meta label:first-child span').textContent = t('reviewDate');
+  document.querySelector('.modal-meta label:nth-child(2) span').textContent = t('reviewLab');
+  document.querySelector('.modal-hint').textContent = t('reviewHint');
+  document.getElementById('review-cancel').textContent = t('reviewCancel');
+  document.getElementById('review-add-row').textContent = t('reviewAddRow');
+  document.getElementById('review-save').textContent = t('reviewSave');
 
   const uncertain = parsed.results.filter(r => r.uncertain).length;
   const total = parsed.results.length;
-  document.getElementById('modal-parsed-count').textContent =
-    `${total} rijen uitgelezen${uncertain > 0 ? ` · ${uncertain} onzeker (geel)` : ''}`;
+  document.getElementById('modal-parsed-count').textContent = t('reviewParsed')(total, uncertain);
 
   renderReviewTable(parsed.results);
   document.getElementById('modal-overlay').classList.remove('hidden');
@@ -793,11 +1039,11 @@ function renderReviewTable(rows) {
     <thead>
       <tr>
         <th class="col-delete"></th>
-        <th class="col-element">Element</th>
-        <th class="col-value">Waarde</th>
-        <th class="col-unit">Eenheid</th>
-        <th class="col-refmin">Ref min</th>
-        <th class="col-refmax">Ref max</th>
+        <th class="col-element">${t('reviewElement')}</th>
+        <th class="col-value">${t('reviewValue')}</th>
+        <th class="col-unit">${t('reviewUnit')}</th>
+        <th class="col-refmin">${t('reviewRefMin')}</th>
+        <th class="col-refmax">${t('reviewRefMax')}</th>
       </tr>
     </thead>
     <tbody id="review-tbody"></tbody>
@@ -921,7 +1167,7 @@ function renderTable() {
   const elTh = document.createElement('th');
   elTh.className = 'el-sticky';
   elTh.style.minWidth = '220px';
-  elTh.textContent = 'Element';
+  elTh.textContent = t('element');
   headerRow.appendChild(elTh);
 
   for (const test of tests) {
@@ -938,7 +1184,7 @@ function renderTable() {
 
   const unitTh = document.createElement('th');
   unitTh.className = 'unit-col';
-  unitTh.textContent = 'Eenheid';
+  unitTh.textContent = t('unit');
   headerRow.appendChild(unitTh);
 
   thead.appendChild(headerRow);
@@ -986,8 +1232,8 @@ function renderTable() {
     catRow.dataset.cat = cat;
     catRow.innerHTML = `<td class="el-sticky cat-label-cell">
       <span class="cat-toggle">${isCollapsed ? '▶' : '▼'}</span>
-      <span class="cat-label">${esc(cat)}</span>
-      <button class="btn-rename-cat" title="Hernoem categorie" data-cat="${esc(cat)}">✎</button>
+      <span class="cat-label">${esc(displayCategory(cat))}</span>
+      <button class="btn-rename-cat" title="${t('rename')}" data-cat="${esc(cat)}">✎</button>
     </td><td colspan="${tests.length + 1}" class="cat-fill-cell"></td>`;
 
     catRow.querySelector('.cat-toggle, .cat-label').addEventListener('click', () => {
@@ -1052,9 +1298,9 @@ function renderTable() {
       row.dataset.element = el;
 
       let rowHTML = `<td class="el-sticky"><div class="element-name">
-        <button class="btn-delete-el" title="Verwijderen" data-el="${esc(el)}">✕</button>
-        <span class="el-label">${esc(el)}</span>
-        <button class="btn-rename" title="Hernoemen" data-el="${esc(el)}">✎</button>
+        <button class="btn-delete-el" title="${t('delete')}" data-el="${esc(el)}">✕</button>
+        <span class="el-label">${esc(displayName(el))}</span>
+        <button class="btn-rename" title="${t('rename')}" data-el="${esc(el)}">✎</button>
       </div></td>`;
 
       let rowUnit = '';
@@ -1176,7 +1422,7 @@ function openDetailPanel(elementName) {
     r.classList.toggle('selected', r.dataset.element === elementName);
   });
 
-  document.getElementById('detail-name').textContent = elementName;
+  document.getElementById('detail-name').textContent = displayName(elementName);
   document.getElementById('main').classList.add('panel-open');
   document.getElementById('detail-panel').classList.remove('hidden');
 
@@ -1216,8 +1462,8 @@ function renderDetailBody(elementName) {
   const descSection = document.createElement('div');
   descSection.className = 'detail-section';
   descSection.innerHTML = `
-    <h3>Uitleg</h3>
-    <textarea class="desc-area" id="detail-desc" placeholder="Voeg hier een beschrijving toe…">${esc(elMeta.description || '')}</textarea>
+    <h3>${t('explanation')}</h3>
+    <textarea class="desc-area" id="detail-desc" placeholder="">${esc(elMeta.description || '')}</textarea>
   `;
   body.appendChild(descSection);
 
@@ -1240,7 +1486,7 @@ function renderDetailBody(elementName) {
   if (dataPoints.length > 0) {
     const chartSection = document.createElement('div');
     chartSection.className = 'detail-section';
-    chartSection.innerHTML = '<h3>Verloop</h3><div class="detail-chart-wrap"><canvas id="detail-chart"></canvas></div>';
+    chartSection.innerHTML = `<h3>${t('trend')}</h3><div class="detail-chart-wrap"><canvas id="detail-chart"></canvas></div>`;
     body.appendChild(chartSection);
 
     // Render chart after DOM insertion
@@ -1251,7 +1497,7 @@ function renderDetailBody(elementName) {
   if (dataPoints.length > 0) {
     const valSection = document.createElement('div');
     valSection.className = 'detail-section';
-    valSection.innerHTML = '<h3>Waarden</h3><div class="detail-values-list" id="detail-vals"></div>';
+    valSection.innerHTML = `<h3>${t('values')}</h3><div class="detail-values-list" id="detail-vals"></div>`;
     body.appendChild(valSection);
 
     const valList = valSection.querySelector('#detail-vals');
@@ -1270,9 +1516,9 @@ function renderDetailBody(elementName) {
   catSection.className = 'detail-section';
   const currentCat = elMeta.category || defaultCategory(elementName);
   catSection.innerHTML = `
-    <h3>Categorie</h3>
+    <h3>${t('category')}</h3>
     <select id="detail-category" class="cat-select">
-      ${state.categories.map(c => `<option value="${c}"${c === currentCat ? ' selected' : ''}>${c}</option>`).join('')}
+      ${state.categories.map(c => `<option value="${c}"${c === currentCat ? ' selected' : ''}>${displayCategory(c)}</option>`).join('')}
     </select>`;
   body.appendChild(catSection);
   catSection.querySelector('#detail-category').addEventListener('change', e => {
@@ -1290,14 +1536,14 @@ function renderDetailBody(elementName) {
   const labSection = document.createElement('div');
   labSection.className = 'detail-section';
   labSection.innerHTML = `
-    <h3>Lab referentiewaarden</h3>
+    <h3>${t('labRef')}</h3>
     <div class="ortho-inputs">
       <div class="ortho-field">
-        <label>Min</label>
+        <label>${t('min')}</label>
         <input type="number" step="any" id="lab-min" value="${labMinDefault ?? ''}" placeholder="—">
       </div>
       <div class="ortho-field">
-        <label>Max</label>
+        <label>${t('max')}</label>
         <input type="number" step="any" id="lab-max" value="${labMaxDefault ?? ''}" placeholder="—">
       </div>
     </div>
@@ -1321,14 +1567,14 @@ function renderDetailBody(elementName) {
   orthoSection.className = 'detail-section';
   if (!state.settings.useOrtho) orthoSection.classList.add('hidden');
   orthoSection.innerHTML = `
-    <h3>Orthomoleculaire referentiewaarden</h3>
+    <h3>${t('orthoRef')}</h3>
     <div class="ortho-inputs">
       <div class="ortho-field">
-        <label>Min</label>
+        <label>${t('min')}</label>
         <input type="number" step="any" id="ortho-min" value="${elMeta.orthoMin ?? ''}" placeholder="—">
       </div>
       <div class="ortho-field">
-        <label>Max</label>
+        <label>${t('max')}</label>
         <input type="number" step="any" id="ortho-max" value="${elMeta.orthoMax ?? ''}" placeholder="—">
       </div>
     </div>
@@ -1352,7 +1598,7 @@ function renderDetailBody(elementName) {
   const saveHint = document.createElement('p');
   saveHint.className = 'save-hint';
   saveHint.style.textAlign = 'right';
-  saveHint.textContent = 'Automatisch opgeslagen';
+  saveHint.textContent = t('autoSaved');
   body.appendChild(saveHint);
 }
 
@@ -1452,18 +1698,44 @@ function renderSettingsBody() {
   const body = document.getElementById('settings-body');
   body.innerHTML = '';
 
-  // Weergave
+  // Language
+  const langSection = document.createElement('div');
+  langSection.className = 'detail-section';
+  langSection.innerHTML = `
+    <h3>${t('languageSection')}</h3>
+    <div class="settings-lang-toggle">
+      <button class="btn-lang ${(state.settings.lang || 'nl') === 'nl' ? 'active' : ''}" data-lang="nl">NL</button>
+      <button class="btn-lang ${(state.settings.lang || 'nl') === 'en' ? 'active' : ''}" data-lang="en">EN</button>
+    </div>
+  `;
+  body.appendChild(langSection);
+
+  langSection.querySelectorAll('.btn-lang').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.settings.lang = btn.dataset.lang;
+      saveState();
+      applyStaticTranslations();
+      renderSettingsBody();
+      renderTable();
+      if (selectedElement && !document.getElementById('detail-panel').classList.contains('hidden')) {
+        document.getElementById('detail-name').textContent = displayName(selectedElement);
+        renderDetailBody(selectedElement);
+      }
+    });
+  });
+
+  // Display
   const displaySection = document.createElement('div');
   displaySection.className = 'detail-section';
   displaySection.innerHTML = `
-    <h3>Weergave</h3>
+    <h3>${t('displaySection')}</h3>
     <label class="settings-toggle">
       <input type="checkbox" id="setting-hide-empty" ${state.settings.hideEmpty ? 'checked' : ''}>
-      <span>Verberg elementen zonder waarden</span>
+      <span>${t('hideEmpty')}</span>
     </label>
     <label class="settings-toggle" style="margin-top:10px">
       <input type="checkbox" id="setting-use-ortho" ${state.settings.useOrtho ? 'checked' : ''}>
-      <span>Gebruik orthomoleculaire referentiewaarden</span>
+      <span>${t('useOrtho')}</span>
     </label>
   `;
   body.appendChild(displaySection);
@@ -1478,7 +1750,6 @@ function renderSettingsBody() {
     state.settings.useOrtho = e.target.checked;
     saveState();
     renderTable();
-    // Refresh detail panel if open so ortho section shows/hides immediately
     if (selectedElement && !document.getElementById('detail-panel').classList.contains('hidden')) {
       renderDetailBody(selectedElement);
     }
@@ -1488,12 +1759,12 @@ function renderSettingsBody() {
   const dataSection = document.createElement('div');
   dataSection.className = 'detail-section';
   dataSection.innerHTML = `
-    <h3>Data</h3>
+    <h3>${t('dataSection')}</h3>
     <div class="settings-actions">
-      <button id="settings-export" class="btn-ghost settings-btn">↓ Exporteer backup</button>
-      <button id="settings-import" class="btn-ghost settings-btn">↑ Backup herstellen</button>
+      <button id="settings-export" class="btn-ghost settings-btn">${t('exportBtn')}</button>
+      <button id="settings-import" class="btn-ghost settings-btn">${t('importBtn')}</button>
     </div>
-    <p class="settings-last-updated">Laatste update: 2 juni 2026 - 21:05</p>
+    <p class="settings-last-updated">${t('lastUpdate')}: 28 juni 2026 - 21:05</p>
   `;
   body.appendChild(dataSection);
 
@@ -1522,7 +1793,7 @@ function importJSON(file) {
       state = imported;
       saveState();
       renderTable();
-      showToast('Backup hersteld');
+      showToast(t('toastImportedBackup'));
     } catch {
       showToast('Fout: ongeldig backup-bestand');
     }
@@ -1578,8 +1849,19 @@ function handlePDFFile(file) {
   });
 }
 
+function applyStaticTranslations() {
+  document.querySelector('header h1').textContent = t('title');
+  document.getElementById('btn-import-pdf').textContent = t('importPdf');
+  document.querySelector('.drop-message p').textContent = t('dropMessage');
+  document.querySelector('#empty-state h2').textContent = t('noDataTitle');
+  document.querySelector('#empty-state p').textContent = t('noDataDesc');
+  document.getElementById('empty-import-btn').textContent = t('noDataBtn');
+  document.querySelector('#settings-panel .detail-header h2').textContent = t('settings');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
+  applyStaticTranslations();
   renderTable();
 
   // PDF button
@@ -1695,7 +1977,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveState();
     renderTable();
     closeModal();
-    showToast(`${results.length} waarden opgeslagen`);
+    showToast(t('toastImported')(results.length));
   });
 
   // Detail panel close
